@@ -1,7 +1,7 @@
-import { CREATED } from 'src/constants/httpCodes';
-import ProductModel, { ProductInputtableTypes } from 'src/database/models/product.model';
-import { Product } from 'src/types/Product';
-import { ServiceData } from 'src/types/ServiceData';
+import { CREATED } from '../constants/httpCodes';
+import ProductModel, { ProductInputtableTypes } from '../database/models/product.model';
+import { Product } from '../types/Product';
+import { ServiceData } from '../types/ServiceData';
 
 const create = async (product: ProductInputtableTypes): Promise<ServiceData<Product>> => {
   const newProduct = await ProductModel.create(product);
