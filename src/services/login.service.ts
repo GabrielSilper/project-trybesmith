@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
-import jwtUtil from 'src/utils/jwt.util';
-import { OK, UNAUTHORIZED } from 'src/constants/httpCodes';
+import jwtUtil from '../utils/jwt.util';
+import { OK, UNAUTHORIZED } from '../constants/httpCodes';
 import UserModel from '../database/models/user.model';
 import { Login } from '../types/Login';
 import { ServiceData } from '../types/ServiceData';

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import loginService from 'src/services/login.service';
+import loginService from '../services/login.service';
 
 const signIn = async (req: Request, res: Response) => {
   const { type, status, message } = await loginService.signIn(req.body);
