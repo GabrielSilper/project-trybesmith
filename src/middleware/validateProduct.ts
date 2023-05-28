@@ -16,9 +16,8 @@ export default function validateProduct(
     if (badOrUnpprocessable) {
       return res.status(BAD_REQUEST).json({ message });
     }
-    if (!badOrUnpprocessable) {
-      return res.status(UNPPROCESSABLE_ENTITY).json({ message });
-    }
+
+    return res.status(UNPPROCESSABLE_ENTITY).json({ message });
   }
   next();
 }
