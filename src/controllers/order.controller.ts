@@ -8,7 +8,8 @@ const getAll = async (req: Request, res: Response) => {
 
 const create = async (req: Request, res: Response) => {
   const { userId, productIds } = req.body;
-  const { status, message } = await orderService.create(userId, productIds);
+  const { type, status, message } = await orderService.create(userId, productIds);
+  if (type) return res.status(status).json({ message });
   return res.status(status).json(message);
 };
 

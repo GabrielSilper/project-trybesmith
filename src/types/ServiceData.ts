@@ -1,4 +1,4 @@
-type Type = 'UNAUTHORIZED';
+type Type = 'UNAUTHORIZED' | 'NOT_FOUND';
 
 export type ServiceData<T> = {
   type: Type | null;

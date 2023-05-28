@@ -1,9 +1,10 @@
 import TheSequelize, { Sequelize } from 'sequelize';
-import { OrderWithProductIds } from 'src/types/OrderWithProductIds';
+import { OrderWithProductIds } from '../types/OrderWithProductIds';
+import UserModel from '../database/models/user.model';
 import ProductModel from '../database/models/product.model';
 import OrderModel from '../database/models/order.model';
 import { ServiceData } from '../types/ServiceData';
-import { CREATED, OK } from '../constants/httpCodes';
+import { CREATED, NOT_FOUND, OK } from '../constants/httpCodes';
 import config from '../database/config/database';
 
 const sequelize = new Sequelize(config);
@@ -27,17 +28,18 @@ const getAll = async (): Promise<ServiceData<OrderWithProductIds[]>> => {
 const create = async (
   userId: number,
   productIds: number[],
-): Promise<ServiceData<OrderWithProductIds>> => {
-  await sequelize.transaction(
-    async (t: TheSequelize.Transaction) => {
-      const newOrder = await OrderModel.create({ userId }, { transaction: t });
+): Promise<ServiceData<OrderWithProductIds | string>> => {
+  const userFound = await UserModel.findByPk(userId);
+  if (!userFound) return { type: 'NOT_FOUND', status: NOT_FOUND, message: '"userId" not found' };
 
-      await ProductModel.update(
-        { orderId: newOrder.dataValues.id },
-        { where: { id: productIds }, transaction: t },
-      );
-    },
-  );
+  await sequelize.transaction(async (t: TheSequelize.Transaction) => {
+    const newOrder = await OrderModel.create({ userId }, { transaction: t });
+
+    await ProductModel.update(
+      { orderId: newOrder.dataValues.id },
+      { where: { id: productIds }, transaction: t },
+    );
+  });
 
   return {
     type: null,
